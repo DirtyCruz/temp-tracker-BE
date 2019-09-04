@@ -39,4 +39,19 @@ describe('temp-network-routes tests', () => {
         expect(res.body).toEqual([temp1, temp2]);
       });
   });
+
+  it('can return all locations', async() => {
+    const location1 = JSON.parse(JSON.stringify(await Location.create({
+      name: 'Mars'
+    })));
+    const location2 = JSON.parse(JSON.stringify(await Location.create({
+      name: 'Venus'
+    })));
+    
+    return request(app)
+      .get('/api/v1/temptracker/locations')
+      .then(res=> {
+        expect(res.body).toEqual([location1, location2]);
+      });
+  });
 });
