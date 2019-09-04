@@ -5,7 +5,7 @@ const app = require('../lib/app');
 const connect = require('../lib/utils/connect');
 const mongoose = require('mongoose');
 
-describe('app routes', () => {
+describe('temp-network-routes tests', () => {
   beforeAll(() => {
     connect();
   });
@@ -16,5 +16,13 @@ describe('app routes', () => {
 
   afterAll(() => {
     return mongoose.connection.close();
+  });
+
+  it('it returns the status 204', () => {
+    return request(app)
+      .get('/status')
+      .then(res => {
+        expect(res.status).toEqual(204);
+      });
   });
 });
