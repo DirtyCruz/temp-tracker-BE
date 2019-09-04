@@ -5,6 +5,8 @@ const app = require('../lib/app');
 const connect = require('../lib/utils/connect');
 const mongoose = require('mongoose');
 
+const Location = require('../lib/models/Location');
+
 describe('temp-network-routes tests', () => {
   beforeAll(() => {
     connect();
@@ -36,6 +38,19 @@ describe('temp-network-routes tests', () => {
         expect(res.body).toEqual({
           id: expect.any(String),
         });
+      });
+  });
+
+  it('it can delete a location', async() => {
+    const location = await Location.create({
+      name: 'Mars'
+    });
+
+    return request(app)
+      .delete(`/deregister/${location._id}`)
+      .then(res => {
+        const cleaned_id = JSON.parse(JSON.stringify(location._id));
+        expect(res.body).toEqual({ id: cleaned_id });
       });
   });
 });
