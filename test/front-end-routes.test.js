@@ -54,4 +54,23 @@ describe('temp-network-routes tests', () => {
         expect(res.body).toEqual([location1, location2]);
       });
   });
+
+  it('can return 10 of the lastest temps by location', async() => {
+    const location = JSON.parse(JSON.stringify(await Location.create({
+      name: 'Mars'
+    })));
+
+    JSON.parse(JSON.stringify(await Temp.create(
+      [...Array(11)].map((_, i) => ({
+        temp: 1000 + i,
+        location: location._id
+      }))
+    )));
+
+    return request(app)
+      .get(`/api/v1/temptracker/temps-by-location/${location._id}`)
+      .then(res=> {
+        expect(res.body).toHaveLength(10);
+      });
+  });
 });
