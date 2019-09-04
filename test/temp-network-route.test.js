@@ -47,12 +47,25 @@ describe('temp-network-routes tests', () => {
     });
 
     const cleaned_id = JSON.parse(JSON.stringify(location._id));
-    
+
     return request(app)
       .delete('/deregister')
       .send({ id: cleaned_id })
       .then(res => {
         expect(res.body).toEqual({ id: cleaned_id });
+      });
+  });
+
+  it('can post a new temp', async() => {
+    const location = await Location.create({
+      name: 'Mars'
+    });
+
+    return request(app)
+      .post(`/temp/${location.id}`)
+      .send({ temperature: 100 })
+      .then(res => {
+        expect(res.body).toEqual({ temperature: 100 });
       });
   });
 });
