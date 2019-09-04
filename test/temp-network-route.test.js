@@ -46,10 +46,12 @@ describe('temp-network-routes tests', () => {
       name: 'Mars'
     });
 
+    const cleaned_id = JSON.parse(JSON.stringify(location._id));
+    
     return request(app)
-      .delete(`/deregister/${location._id}`)
+      .delete('/deregister')
+      .send({ id: cleaned_id })
       .then(res => {
-        const cleaned_id = JSON.parse(JSON.stringify(location._id));
         expect(res.body).toEqual({ id: cleaned_id });
       });
   });
