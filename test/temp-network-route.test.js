@@ -25,4 +25,17 @@ describe('temp-network-routes tests', () => {
         expect(res.status).toEqual(204);
       });
   });
+
+  it('it can create a location', () => {
+    return request(app)
+      .post('/register')
+      .send({
+        name: 'Mars'
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          id: expect.any(String),
+        });
+      });
+  });
 });
